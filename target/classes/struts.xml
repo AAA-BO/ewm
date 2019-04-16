@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <!-- 将Action交给spring容器管理 -->
+    <constant name="struts.objectFactory" value="spring" />
+
+    <!-- 模式为开发模式，修改xml配置文件会自动加载，项目交付的时候设置为false,以免影响性能 -->
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.configuration.xml.reload" value="true" />
+    <!-- 字符集编码 -->
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+
+
+
+    <package name="base" namespace="/" extends="struts-default">
+        <interceptors>
+            <interceptor name="loginInterceptor" class="cn.bo.ewm.web.interceptor.LoginInterceptor"/>
+            <interceptor-stack name="myStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="loginInterceptor">
+                    <param name="excludeMethods">showRecord_phone,myRecord,phoneLoginPage,showQrcode,login,phoneLogin,maintenanceAuthority</param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="myStack"/>
+
+        <global-results>
+            <result name="login">index.html</result>
+            <result name="success">/WEB-INF/jsp/login/home.jsp</result>
+            <result name="phoneLogin">/WEB-INF/jsp/login/phoneLogin.jsp</result>
+            <result name="phoneLoginSUCCESS" type="redirectAction">equipment_showQrcode?oid=${#session.lastOid}</result>
+        </global-results>
+
+        <action name="staff_*" class="staffAction" method="{1}">
+            <result name="qrcordInfo">/WEB-INF/jsp/staff/showQrcordInfo.jsp</result>
+        </action>
+
+        <action name="equipment_*" class="equipmentAction" method="{1}">
+            <result name="qrcordInfo">/WEB-INF/jsp/equipment/showQrcordInfo.jsp</result>
+            <result name="maintenance">/WEB-INF/jsp/equipment/showQrcordInfo.jsp</result>
+        </action>
+
+        <action name="record_*" class="recordAction" method="{1}">
+            <result name="list">/WEB-INF/jsp/record/list.jsp</result>
+        </action>
+
+        <!--放最后面-->
+        <action name="page_*_*">
+            <result>/WEB-INF/jsp/{1}/{2}.jsp</result>
+        </action>
+
+    </package>
+
+
+</struts>

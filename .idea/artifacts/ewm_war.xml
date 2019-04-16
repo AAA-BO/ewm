@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ewm:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="ewm-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="ewm:war exploded" />
+    </root>
+  </artifact>
+</component>
