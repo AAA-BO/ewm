@@ -316,7 +316,7 @@
                     width : 300,
                     height : 300
                 });
-                qrcode.makeCode("/equipment_showQrcode?oid="+showId);
+                qrcode.makeCode("/equipment_phone_home?oid="+showId);
                 // 生成二维码到panel
                 $("#id_qrcode").append("点击模拟扫描二维码");//清空子元素
 

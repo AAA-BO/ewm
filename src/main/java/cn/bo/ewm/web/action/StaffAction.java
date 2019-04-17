@@ -257,4 +257,75 @@ public class StaffAction extends BaseAction<Staff> {
 
         return LOGIN;
     }
+
+    /**
+     * 查询该用户的所有维护设备
+     */
+    public String phone_elist() throws Exception {
+        Staff staff = staffService.findById(model.getOid());
+        List<Equipment> equipments = new ArrayList<>(staff.getEquipments());
+
+        // 使用oid排序
+        equipments.sort(new Comparator<Equipment>() {
+            public int compare(Equipment o1, Equipment o2) {
+                if (o1.getOid() == o2.getOid()) {
+                    return 0;
+                }
+                if (o1.getOid() > o2.getOid()) {
+                    return 1;
+                }
+                return -1;
+            }
+        });
+        ServletActionContext.getRequest().setAttribute("equipments",equipments);
+        return "phone_elist_Success";
+    }
+
+    /**
+     * 查询该用户的所有维护信息
+     */
+    public String phone_rlist() throws Exception {
+        Staff staff = staffService.findById(model.getOid());
+        List<Record> records = new ArrayList<>(staff.getRecords());
+
+        // 使用oid排序
+        records.sort(new Comparator<Record>() {
+            public int compare(Record o1, Record o2) {
+                if (o1.getDate().getTime() == o2.getDate().getTime()) {
+                    return 0;
+                }
+                if (o1.getDate().getTime() < o2.getDate().getTime()) {
+                    return 1;
+                }
+                return -1;
+            }
+        });
+        ServletActionContext.getRequest().setAttribute("records",records);
+        return "phone_rlist_Success";
+    }
+
+    /**
+     * 扫员工码后
+     */
+    public String phone_showQrcode() throws Exception {
+        Staff staff = staffService.findById(model.getOid());
+        ActionContext.getContext().getValueStack().push(staff);
+        return "phone_showQrcode_success";
+    }
+
+
+    public String phone_login() throws Exception {
+        Staff staff = staffService.findByUsername(model.getUsername());
+        if (staff != null && StringUtils.isNotBlank(staff.getPassword()) && StringUtils.isNotBlank(model.getPassword())) {
+            if (staff.getPassword().equals(model.getPassword())) {
+                ServletActionContext.getRequest().getSession().setAttribute("loginUser", staff);
+                return "phone_login_success";
+            }
+        }
+
+        addActionError("用户名或密码错误");
+
+        return "phone_login_login";
+    }
+
 }

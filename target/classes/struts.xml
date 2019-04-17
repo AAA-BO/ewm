@@ -18,7 +18,7 @@
             <interceptor-stack name="myStack">
                 <interceptor-ref name="defaultStack"/>
                 <interceptor-ref name="loginInterceptor">
-                    <param name="excludeMethods">showRecord_phone,myRecord,phoneLoginPage,showQrcode,login,phoneLogin,maintenanceAuthority</param>
+                    <param name="excludeMethods">phone_*,execute,showRecord_phone,myRecord,phoneLoginPage,showQrcode,login,phoneLogin,maintenanceAuthority</param>
                 </interceptor-ref>
             </interceptor-stack>
         </interceptors>
@@ -30,24 +30,38 @@
             <result name="success">/WEB-INF/jsp/login/home.jsp</result>
             <result name="phoneLogin">/WEB-INF/jsp/login/phoneLogin.jsp</result>
             <result name="phoneLoginSUCCESS" type="redirectAction">equipment_showQrcode?oid=${#session.lastOid}</result>
+            <result name="phone_login_success" type="redirectAction">staff_phone_showQrcode?oid=${#session.loginUser.oid}</result>
+            <result name="phone_login_login" >/WEB-INF/jsp/phone/login/login.jsp</result>
         </global-results>
 
         <action name="staff_*" class="staffAction" method="{1}">
             <result name="qrcordInfo">/WEB-INF/jsp/staff/showQrcordInfo.jsp</result>
+            <result name="phone_elist_Success">/WEB-INF/jsp/phone/staff/elist.jsp</result>
+            <result name="phone_rlist_Success">/WEB-INF/jsp/phone/staff/rlist.jsp</result>
+            <result name="phone_showQrcode_success">/WEB-INF/jsp/phone/staff/homepage.jsp</result>
         </action>
 
         <action name="equipment_*" class="equipmentAction" method="{1}">
             <result name="qrcordInfo">/WEB-INF/jsp/equipment/showQrcordInfo.jsp</result>
             <result name="maintenance">/WEB-INF/jsp/equipment/showQrcordInfo.jsp</result>
+            <result name="phone_home_success">/WEB-INF/jsp/phone/equipment/homepage.jsp</result>
+            <result name="phone_slist_success">/WEB-INF/jsp/phone/equipment/slist.jsp</result>
+            <result name="phone_rlist_success">/WEB-INF/jsp/phone/equipment/rlist.jsp</result>
+            <result name="phone_myrlist_success">/WEB-INF/jsp/phone/equipment/myrlist.jsp</result>
         </action>
 
         <action name="record_*" class="recordAction" method="{1}">
             <result name="list">/WEB-INF/jsp/record/list.jsp</result>
+            <result name="phone_home_success">/WEB-INF/jsp/phone/record/homepage.jsp</result>
         </action>
 
         <!--放最后面-->
         <action name="page_*_*">
             <result>/WEB-INF/jsp/{1}/{2}.jsp</result>
+        </action>
+
+        <action name="phonePage_*_*">
+            <result>/WEB-INF/jsp/phone/{1}/{2}.jsp</result>
         </action>
 
     </package>

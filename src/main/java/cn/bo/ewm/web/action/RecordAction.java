@@ -71,4 +71,20 @@ public class RecordAction extends BaseAction<Record> {
         ServletActionContext.getResponse().setContentType("text/json;charset=utf-8");
         ServletActionContext.getResponse().getWriter().print(1);
     }
+
+    /**
+     * 展示oid对应记录的数据
+     */
+    public String phone_home() throws Exception {
+        Record record = recordService.findById(model.getOid());
+        ActionContext.getContext().getValueStack().push(record);
+        return "phone_home_success";
+    }
+
+    // 手机端提交维护数据
+    public void phone_weihu() throws Exception {
+        add();;
+    }
+
+
 }

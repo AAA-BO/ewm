@@ -221,5 +221,96 @@ public class EquipmentAction extends BaseAction<Equipment> {
 
     }
 
+    public String phone_home() throws Exception {
+        Equipment equipment = equipmentService.findById(model.getOid());
+        int number = equipment.getStaffs().size();
+        ActionContext.getContext().getValueStack().push(equipment);
+        ServletActionContext.getRequest().setAttribute("number",number);
+        return "phone_home_success";
+    }
+
+    // 所有维护人员
+    public String phone_slist() throws Exception {
+        Equipment equipment = equipmentService.findById(model.getOid());
+        List<Staff> staffs = new ArrayList<>(equipment.getStaffs());
+
+        // 使用oid排序
+        staffs.sort(new Comparator<Staff>() {
+            public int compare(Staff o1, Staff o2) {
+                if(o1.getOid() == o2.getOid()) {
+                    return 0;
+                }
+                if(o1.getOid() > o2.getOid()) {
+                    return 1;
+                }
+                return -1;
+            }
+        });
+        ServletActionContext.getRequest().setAttribute("staffs",staffs);
+        return "phone_slist_success";
+    }
+
+    // 所有维护记录
+    public String phone_rlist() throws Exception {
+        Equipment equipment = equipmentService.findById(model.getOid());
+        List<Record> records = new ArrayList<>(equipment.getRecords());
+
+        // 使用oid排序
+        records.sort(new Comparator<Record>() {
+            public int compare(Record o1, Record o2) {
+                if(o1.getDate().getTime() == o2.getDate().getTime()) {
+                    return 0;
+                }
+                if(o1.getDate().getTime() < o2.getDate().getTime()) {
+                    return 1;
+                }
+                return -1;
+            }
+        });
+        ServletActionContext.getRequest().setAttribute("records",records);
+        return "phone_rlist_success";
+    }
+
+    // 自己的维护记录
+    public String phone_myrlist() throws Exception {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        // 获取登录用户
+        Object loginUser =  ServletActionContext.getRequest().getSession().getAttribute("loginUser");
+
+        Staff staff = staffService.findById(((Staff)loginUser).getOid());// 获取数据库最新信息
+
+        Integer eid = model.getOid();//设备id
+
+        List<Record> records = new ArrayList<>(staff.getRecords());
+        // 过滤其他设备de维护信息
+        /*while (records.iterator().hasNext()) {
+            Record record = records.iterator().next();
+            if(record.getEquipment().getOid() != eid) {
+                records.iterator().remove();
+            }
+        }*/
+
+        // 使用oid排序
+        records.sort(new Comparator<Record>() {
+            public int compare(Record o1, Record o2) {
+                if (o1.getDate().getTime() == o2.getDate().getTime()) {
+                    return 0;
+                }
+                if (o1.getDate().getTime() < o2.getDate().getTime()) {
+                    return 1;
+                }
+                return -1;
+            }
+        });
+
+        ServletActionContext.getRequest().setAttribute("records",records);
+
+        return "phone_myrlist_success";
+    }
+
+    public void phone_myrlist_verification() throws Exception {
+        maintenanceAuthority();
+    }
+
 
 }
