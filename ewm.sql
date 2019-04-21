@@ -14,8 +14,8 @@
  Date: 17/04/2019 21:24:13
 */
 
--- SET NAMES utf8mb4;
--- SET FOREIGN_KEY_CHECKS = 0;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for e_equipment
