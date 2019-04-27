@@ -77,6 +77,9 @@ public class EquipmentServiceImpl  implements IEquipmentService {
             sb.append(","+e.getOid());
         }
 
+        if("".equals(sb)) {
+            return null;
+        }
         return equipmentDao.findNotInId(sb.toString().substring(1));
     }
 

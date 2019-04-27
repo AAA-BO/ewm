@@ -27,6 +27,7 @@
 
         <global-results>
             <result name="login">index.html</result>
+            <result name="login_houtai">/WEB-INF/jsp/phone/login/login.jsp</result>
             <result name="success">/WEB-INF/jsp/login/home.jsp</result>
             <result name="phoneLogin">/WEB-INF/jsp/login/phoneLogin.jsp</result>
             <result name="phoneLoginSUCCESS" type="redirectAction">equipment_showQrcode?oid=${#session.lastOid}</result>

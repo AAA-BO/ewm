@@ -14,6 +14,7 @@ public class LoginInterceptor extends MethodFilterInterceptor {
         if(loginUser != null) {
             return invocation.invoke();
         }
-        return "login";
+//        return "login";
+        return "login_houtai";
     }
 }

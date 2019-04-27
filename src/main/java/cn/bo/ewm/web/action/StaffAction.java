@@ -188,14 +188,12 @@ public class StaffAction extends BaseAction<Staff> {
     }
 
     /**
-     * 获取未关联设备
-     *
-     * @throws Exception
+     * 获取此员工未关联的设备
      */
     public void getNotRelevance() throws Exception {
         List<Equipment> equipments = equipmentService.getNotRelevance(model.getOid());
-        pageBean.setCount(equipments.size());
-        pageBean.setData(equipments);
+        pageBean.setCount(null==equipments ? 0 : equipments.size());
+        pageBean.setData(null==equipments ? null : equipments);
         this.java2Json(pageBean, new String[]{"page", "limit", "detachedCriteria", "staffs", "records"});
         return;
     }
