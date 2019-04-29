@@ -1,14 +1,21 @@
 package cn.bo.ewm.entity;
 
+import java.io.File;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 public class Staff {
     private Integer oid;
     private String name;
+    private Integer sex;
+    private String department;//部门
+    private String zhicheng;//职称
+    private String phone;//手机
+    private String email;//邮箱
     private String username;
     private String password;
+    private String image;//头像
+
     private Set<Equipment> equipments = new HashSet<>();
     private Set<Record> records = new HashSet<>();
 
@@ -61,7 +68,54 @@ public class Staff {
         this.password = password;
     }
 
-    /*@Override
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getZhicheng() {
+        return zhicheng;
+    }
+
+    public void setZhicheng(String zhicheng) {
+        this.zhicheng = zhicheng;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+/*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Staff)) return false;

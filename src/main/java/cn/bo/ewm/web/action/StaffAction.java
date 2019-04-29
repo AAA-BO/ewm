@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.*;
 
 @Controller
@@ -35,7 +36,25 @@ public class StaffAction extends BaseAction<Staff> {
         return;
     }
 
+    private String getZhicheng(Enumeration e) {
+        StringBuilder sb = new StringBuilder();
+        while (e.hasMoreElements()) {
+            Object o = e.nextElement();
+            String s = o.toString();
+            if(s.startsWith("zhicheng")) {
+                sb.append(s.substring(9,s.length()-1)+",");
+            }
+        }
+        if(sb.length()>0) {
+            return  sb.deleteCharAt(sb.length()-1).toString();
+        }else {
+            return null;
+        }
+    }
+
     public void add() throws Exception {
+        // 解析职称复选框，并设入
+        model.setZhicheng( getZhicheng(ServletActionContext.getRequest().getParameterNames()) );
         staffService.save(model);
         printFlag(1);
     }

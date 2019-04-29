@@ -76,11 +76,11 @@ public class EquipmentServiceImpl  implements IEquipmentService {
         for(Equipment e  : staff.getEquipments()) {
             sb.append(","+e.getOid());
         }
-
-        if("".equals(sb)) {
-            return null;
+        String s = sb.toString();
+        if("".equals(s)) {
+            return equipmentDao.findAll();
         }
-        return equipmentDao.findNotInId(sb.toString().substring(1));
+        return equipmentDao.findNotInId(s.substring(1));
     }
 
 

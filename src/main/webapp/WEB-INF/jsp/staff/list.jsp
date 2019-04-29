@@ -44,23 +44,76 @@
         <div class="layui-card-body">
             <form id="id_addFrom" class="layui-form layui-form-pane"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
                 <div class="layui-form-item">
+                    <label class="layui-form-label">姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" placeholder="请输入" autocomplete="off" class="layui-input" required>
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">账户</label>
                     <div class="layui-input-block">
-                        <input type="text" name="username" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="username" placeholder="请输入" autocomplete="off" class="layui-input" required>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">密码</label>
                     <div class="layui-input-block">
-                        <input type="text" name="password" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="password" placeholder="请输入" autocomplete="off" class="layui-input" required>
+                    </div>
+                </div>
+                <%--新加字段--%>
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="sex" value="1" title="男" >
+                        <input type="radio" name="sex" value="2" title="女" >
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">姓名</label>
+                    <label class="layui-form-label">部门</label>
                     <div class="layui-input-block">
-                        <input type="text" name="name" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <select name="department">
+                            <option value=""></option>
+                            <option value="设备一部">设备一部</option>
+                            <option value="设备二部">设备二部</option>
+                            <option value="施工一部">施工一部</option>
+                            <option value="施工二部">施工二部</option>
+                        </select>
                     </div>
                 </div>
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">职称</label>
+                    <div class="layui-input-block" >
+                        <input type="checkbox" lay-skin="primary" name="zhicheng[初级建造师]" title="初级建造师">
+                        <input type="checkbox" lay-skin="primary" name="zhicheng[中级建造师]" title="中级建造师">
+                        <input type="checkbox" lay-skin="primary" name="zhicheng[高级建造师]" title="高级建造师">
+                        <input type="checkbox" lay-skin="primary" name="zhicheng[初级施工人员]" title="初级施工人员">
+                        <input type="checkbox" lay-skin="primary" name="zhicheng[中级施工人员]" title="中级施工人员">
+                        <input type="checkbox" lay-skin="primary" name="zhicheng[高级施工人员]" title="高级施工人员">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">手机</label>
+                    <div class="layui-input-block">
+                        <input type="tel" name="phone" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-block">
+                        <input type="email" name="email" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">头像</label>
+                    <div class="layui-input-block">
+                        <button type="button" class="layui-btn" id="upload_add">
+                            <i class="layui-icon">&#xe67c;</i>上传图片
+                        </button>
+                    </div>
+                </div>
+
                 <div class="layui-form-item" style="text-align: right">
                     <div class="layui-input-block">
                         <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -141,6 +194,20 @@
 <script src="js/qrcode.js"></script>
 
 <script>
+    // 文件上传
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#upload_add', //绑定元素,这个是html中上传控件的id
+            url: '/staff_upload', //上传接口url
+            multiple:true,
+            field:"image"
+        });
+    });
+
+
     var showId = 0;
 
     // table操作
@@ -189,10 +256,10 @@
                     // 打开添加模态框
                     layer.open({
                         type: 1
-                        , offset: '50px'
+                        , offset: '25px'
                         , title: false
                         , resize: false
-                        // , area: ['800px', '600px']
+                        , area: ['1000px', '680px']
                         , shade: [0.8, '#393D49']
                         , content: $('#addPanel')
                         ,cancel: function(index, layero){// 点击关闭按钮后回调

@@ -11,19 +11,19 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">建筑施工管理系统</div>
+        <div class="layui-logo">建筑施工管理系统后台</div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="images/user.jpg" class="layui-nav-img">
-                    ${loginUser.name}
+                    管理员
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="/staff_logout">退出</a></li>
+            <li class="layui-nav-item"><a href="/admin_logout">退出</a></li>
         </ul>
     </div>
 

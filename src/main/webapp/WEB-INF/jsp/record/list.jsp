@@ -19,8 +19,6 @@
         <!--表头工具栏-->
         <script type="text/html" id="mainToolbar">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="add">添加</button>
-                <button class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="update">编辑</button>
                 <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
             </div>
         </script>
