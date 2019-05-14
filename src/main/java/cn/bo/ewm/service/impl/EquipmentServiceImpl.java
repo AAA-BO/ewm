@@ -3,8 +3,10 @@ package cn.bo.ewm.service.impl;
 import cn.bo.ewm.dao.IEquipmentDao;
 import cn.bo.ewm.dao.IStaffDao;
 import cn.bo.ewm.entity.Equipment;
+import cn.bo.ewm.entity.Equipment;
 import cn.bo.ewm.entity.Staff;
 import cn.bo.ewm.service.IEquipmentService;
+import cn.bo.ewm.service.base.BaseService;
 import cn.bo.ewm.utils.PageBean;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
@@ -20,24 +22,17 @@ import java.util.List;
 
 @Service
 @Transactional
-public class EquipmentServiceImpl  implements IEquipmentService {
-    @Autowired
-    private IEquipmentDao equipmentDao;
-    @Autowired
-    private IStaffDao staffDao;
-    public void save(Equipment model) {
-        equipmentDao.save(model);
+public class EquipmentServiceImpl extends BaseService implements IEquipmentService {
+    // 通用方法
+    public Serializable save(Equipment model) {
+        return equipmentDao.save(model);
     }
     public void pageQuery(PageBean pageBean) {
         equipmentDao.pageQuery(pageBean);
     }
-
-    /**
-     * 批量删除
-     * 物理删除
-     */
-    public void deleteBatch(String ids) {//1,2,3,4
-        if(StringUtils.isNotBlank(ids)){
+    public void deleteBatch(String ids) {
+        if (StringUtils.isNotBlank(ids)) {
+            // 注意："1".split(",") => [1]
             String[] EquipmentIds = ids.split(",");
             for (String id : EquipmentIds) {
                 Equipment Equipment = equipmentDao.findById(Integer.valueOf(id));
@@ -45,31 +40,27 @@ public class EquipmentServiceImpl  implements IEquipmentService {
             }
         }
     }
-
     public Equipment findById(Serializable id) {
         return equipmentDao.findById(id);
     }
-
-    public void update(Equipment Equipment) {
-        equipmentDao.update(Equipment);
+    public void update(Equipment equipment) {
+        equipmentDao.update(equipment);
     }
-
-    @Override
     public List<Equipment> findAll() {
         return equipmentDao.findAll();
     }
-
-    @Override
     public List<Equipment> findByIds(String ids) {
-        String[] idArray = ids.split(",");
         List<Equipment> equipments = new ArrayList<>();
-        for (String id : idArray) {
-            equipments.add(equipmentDao.findById(Integer.valueOf(id)));
+        if (StringUtils.isNotBlank(ids)) {
+            String[] idArray = ids.split(",");
+            for (String id : idArray) {
+                equipments.add(equipmentDao.findById(Integer.valueOf(id)));
+            }
         }
         return equipments;
     }
 
-    @Override
+    // 专用方法
     public List<Equipment> getNotRelevance(Integer oid) {
         Staff staff = staffDao.findById(oid);
         StringBuilder sb  = new StringBuilder();

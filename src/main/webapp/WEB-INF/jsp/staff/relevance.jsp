@@ -224,7 +224,14 @@
                         ,cols: [[ //表头
                             {type: 'checkbox', width: 50, fixed: 'left'}
                             ,{field: 'oid', title: 'ID', sort: true}
-                            ,{field: 'name', title: '设备名'}
+                            ,{field: 'name', title: '设备名称'}
+                            , { title: '工地', templet: function (rowData) {
+                                    if (rowData.site == null) {
+                                        return "未设置";
+                                    }
+                                    return rowData.site.name;
+                                }
+                            }
                         ]]
                     });
 
@@ -279,7 +286,7 @@
             // 获取mainTable的选中项
             var checkStatus_mt = layui.table.checkStatus('id_mainTable');
             var staffIdArray = new Array();
-            for (data_index in checkStatus_mt.data) {
+            for (var data_index in checkStatus_mt.data) {
                 staffIdArray.push(checkStatus_mt.data[data_index].oid);
             }
             var staffIdsStr = staffIdArray.join(',');
@@ -287,7 +294,7 @@
             // 获取batchTable的选中项
             var checkStatus_bt = layui.table.checkStatus('id_batchTable');
             var equipmentIdArray = new Array();
-            for (data_index in checkStatus_bt.data) {
+            for (var data_index in checkStatus_bt.data) {
                 equipmentIdArray.push(checkStatus_bt.data[data_index].oid);
             }
             var equipmentIdsStr = equipmentIdArray.join(',');
@@ -311,7 +318,7 @@
             // 获取relevanceTable的选中项
             var checkStatus_rt = layui.table.checkStatus('id_relevanceTable');
             var equipmentIdArray = new Array();
-            for (data_index in checkStatus_rt.data) {
+            for (var data_index in checkStatus_rt.data) {
                 equipmentIdArray.push(checkStatus_rt.data[data_index].oid);
             }
             var equipmentIdsStr = equipmentIdArray.join(',');

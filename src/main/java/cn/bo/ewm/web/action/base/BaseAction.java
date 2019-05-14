@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import cn.bo.ewm.service.*;
 import cn.bo.ewm.utils.PageBean;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -14,14 +15,27 @@ import org.hibernate.criterion.DetachedCriteria;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 表现层通用实现
- * @author zhaoqx
- *
- * @param <T>
  */
 public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
+	@Autowired
+	protected IEquipmentService equipmentService;
+	@Autowired
+    protected IStaffService staffService;
+	@Autowired
+    protected IRecordService recordService;
+	@Autowired
+    protected ISiteService siteService;
+	@Autowired
+    protected IDictionariesService dictionariesService;
+	@Autowired
+	protected IMubanService mubanService;
+	@Autowired
+	protected IMaintainGroupService maintainGroupService;
+
 	protected PageBean pageBean = new PageBean();
 	//创建离线提交查询对象
 	DetachedCriteria detachedCriteria = null;
@@ -34,6 +48,9 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 		pageBean.setLimit(limit);
 	}
 
+	/**
+	 * 以JSON格式响应一个数字
+ 	 */
 	public void printFlag(int i) throws Exception {
 		ServletActionContext.getResponse().setContentType("text/json;charset=utf-8");
 		ServletActionContext.getResponse().getWriter().print(i);
@@ -74,10 +91,7 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 			e.printStackTrace();
 		}
 	}
-	
-	public static final String HOME = "home";
-	public static final String LIST = "list";
-	
+
 	//模型对象
 	protected T model;
 	public T getModel() {
@@ -100,5 +114,11 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+	}
+
+	// 用于接受要删除的oid
+	protected String ids;
+	public void setIds(String ids) {
+		this.ids = ids;
 	}
 }

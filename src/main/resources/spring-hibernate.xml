@@ -44,6 +44,10 @@
                 <value>classpath:cn/bo/ewm/entity/Equipment.hbm.xml</value>
                 <value>classpath:cn/bo/ewm/entity/Record.hbm.xml</value>
                 <value>classpath:cn/bo/ewm/entity/Staff.hbm.xml</value>
+                <value>classpath:cn/bo/ewm/entity/Site.hbm.xml</value>
+                <value>classpath:cn/bo/ewm/entity/Dictionaries.xml</value>
+                <value>classpath:cn/bo/ewm/entity/Muban.xml</value>
+                <value>classpath:cn/bo/ewm/entity/MaintainGroup.hbm.xml</value>
             </list>
         </property>
     </bean>

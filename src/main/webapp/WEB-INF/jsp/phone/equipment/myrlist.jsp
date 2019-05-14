@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <title>BUI示例</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.css">
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/zepto.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.js"></script>
+    <link rel="stylesheet" href="/bui/bui.css">
+    <script src="/bui/zepto.js"></script>
+    <script src="/bui/bui.js"></script>
     <style></style>
 </head>
 <body>
@@ -122,16 +122,16 @@
     </header>
     <main>
 
-        <ul class="bui-list list-photo">
+        <ul class="bui-list personal-info">
 
             <s:iterator value="#request.records" var="record">
                 <li class="bui-btn bui-box" onclick="to('/record_phone_home','${record.oid}');">
                     <div class="thumbnail">
-                        <img src="images/demo/xiaowaji.jpg" alt="">
+                        <img src="demo/sb${record.equipment.oid%4}.jpg" alt="">
                     </div>
                     <div class="span1">
                         <div class="photo-info">
-                            <h3 class="photo-title">${record.staff.name}
+                            <h3 class="photo-title">${record.equipment.name}
                                 <div class="photo-desc">
                                     <span class="time"><s:date name="date" format="yyyy/MM/dd hh:mm" />：${record.info}</span>
                                 </div>
@@ -146,6 +146,8 @@
     </main>
 </div>
 <script>
+    bui.ready(function () {
+    })
 
     function to(url,oid) {
         window.location.href = url+"?oid="+oid;

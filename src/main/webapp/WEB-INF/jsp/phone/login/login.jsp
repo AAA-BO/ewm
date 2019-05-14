@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <title>BUI示例</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.css">
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/zepto.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.js"></script>
+    <link rel="stylesheet" href="/bui/bui.css">
+    <script src="/bui/zepto.js"></script>
+    <script src="/bui/bui.js"></script>
     <style></style>
 </head>
 <body>
@@ -101,7 +101,7 @@
         <form id="form" action="/staff_phone_login">
             <div class="logo bui-box-center">
                 <img src="images/demo/logo.png" alt="">
-                <h1>EWM</h1>
+                <h1>施工管理</h1>
             </div>
             <div class="login-form">
                 <ul class="bui-list">

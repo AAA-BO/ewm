@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <title>BUI示例</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.css">
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/zepto.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.js"></script>
+    <link rel="stylesheet" href="/bui/bui.css">
+    <script src="/bui/zepto.js"></script>
+    <script src="/bui/bui.js"></script>
     <style></style>
 </head>
 <body>
@@ -122,33 +122,58 @@
     </header>
     <main>
 
-        <ul class="bui-list list-photo">
+        <ul class="bui-list personal-info">
+            <%--<li class="bui-btn-title">
+                <h3 class="photo-title">直接管理的人员</h3>
+            </li>
             <s:iterator value="#request.staffs" var="staff">
                 <li class="bui-btn bui-box" onclick="to('/staff_phone_showQrcode','${staff.oid}');">
-                    <div class="thumbnail">
-                        <img src="images/face.png" alt="">
+                    <div class="thumbnail ring">
+                        <img src="demo/tx${staff.oid%5}.jpg" alt="">
                     </div>
                     <div class="span1">
                         <div class="photo-info">
-                            <%--使用每个员工的最新维护数据排序--%>
                             <h3 class="photo-title">${staff.name}
                                 <div class="photo-desc">
-                                    <%--展示该员工最新的维护数据--%>
-                                    <span class="time">2018-01-22 12:24：设备没啥毛病</span>
+                                    <span class="time">${staff.department} ${staff.phone}</span>
                                 </div>
                             </h3>
                         </div>
                     </div>
                 </li>
+            </s:iterator>--%>
+            <%--维护组--%>
+            <s:iterator value="#request.maintainGroups" var="maintainGroup">
+                <li class="bui-btn-title">
+                    <h3 class="photo-title">维护组：${maintainGroup.name}</h3>
+                    <div class="photo-desc">
+                        <span class="time">简介：${maintainGroup.info}</span>
+                    </div>
+                </li>
+                <s:iterator value="staffs" var="staff">
+                    <li class="bui-btn bui-box" onclick="to('/staff_phone_showQrcode','${staff.oid}');">
+                        <div class="thumbnail ring">
+                            <img src="demo/tx${staff.oid%5}.jpg" alt="">
+                        </div>
+                        <div class="span1">
+                            <div class="photo-info">
+                                <h3 class="photo-title">${staff.name}
+                                    <div class="photo-desc">
+                                        <span class="time">${staff.department} ${staff.phone}</span>
+                                    </div>
+                                </h3>
+                            </div>
+                        </div>
+                    </li>
+                </s:iterator>
             </s:iterator>
-
-
-
-
         </ul>
     </main>
 </div>
 <script>
+    bui.ready(function () {
+    })
+
     function to(url,oid) {
         window.location.href = url+"?oid="+oid;
     }

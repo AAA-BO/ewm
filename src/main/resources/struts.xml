@@ -10,15 +10,13 @@
     <!-- 字符集编码 -->
     <constant name="struts.i18n.encoding" value="UTF-8" />
 
-    <constant name="struts.multipart.maxSize" value="15000000"></constant>
-
     <package name="base" namespace="/" extends="struts-default">
         <interceptors>
             <interceptor name="loginInterceptor" class="cn.bo.ewm.web.interceptor.LoginInterceptor"/>
             <interceptor-stack name="myStack">
                 <interceptor-ref name="defaultStack"/>
                 <interceptor-ref name="loginInterceptor">
-                    <param name="excludeMethods">*login*,phone_*,execute,showRecord_phone,myRecord,phoneLoginPage,showQrcode,login,phoneLogin,maintenanceAuthority</param>
+                    <param name="excludeMethods">*add*,*login*,phone_*,execute,showRecord_phone,myRecord,phoneLoginPage,showQrcode,login,phoneLogin,maintenanceAuthority</param>
                 </interceptor-ref>
             </interceptor-stack>
         </interceptors>
@@ -42,22 +40,11 @@
         </action>
 
         <action name="staff_*" class="staffAction" method="{1}">
-            <interceptor-ref name="loginInterceptor"/>
-            <!--配置文件上传的参数-->
-            <!-- 指定（限制）上传文件的类型，定义局部拦截器，修改默认拦截器的属性
-                "fileUpload.maximumSize" ：限制上传最大的文件大小。byte
-                "fileUpload.allowedTypes"：允许上传文件的类型。
-                "fileUpload.allowedExtensions"：允许上传文件的可扩展文件类型。 -->
-            <interceptor-ref name="defaultStack">
-                <param name="fileUpload.maximumSize">102400</param>
-                <param name="fileUpload.allowedTypes">image/jpeg,image/jpg,image/bmp</param>
-                <param name="fileUpload.allowedExtensions">.jpeg,.jpg,.bmp</param>
-            </interceptor-ref>
-
             <result name="qrcordInfo">/WEB-INF/jsp/staff/showQrcordInfo.jsp</result>
             <result name="phone_elist_Success">/WEB-INF/jsp/phone/staff/elist.jsp</result>
             <result name="phone_rlist_Success">/WEB-INF/jsp/phone/staff/rlist.jsp</result>
             <result name="phone_showQrcode_success">/WEB-INF/jsp/phone/staff/homepage.jsp</result>
+            <result name="phone_mlist_Success">/WEB-INF/jsp/phone/staff/mlist.jsp</result>
         </action>
 
         <action name="equipment_*" class="equipmentAction" method="{1}">
@@ -67,13 +54,31 @@
             <result name="phone_slist_success">/WEB-INF/jsp/phone/equipment/slist.jsp</result>
             <result name="phone_rlist_success">/WEB-INF/jsp/phone/equipment/rlist.jsp</result>
             <result name="phone_myrlist_success">/WEB-INF/jsp/phone/equipment/myrlist.jsp</result>
+            <result name="phone_mlist_Success">/WEB-INF/jsp/phone/equipment/mlist.jsp</result>
+            <result name="phone_weihu_success">/WEB-INF/jsp/phone/equipment/weihu.jsp</result>
         </action>
 
         <action name="record_*" class="recordAction" method="{1}">
             <result name="list">/WEB-INF/jsp/record/list.jsp</result>
             <result name="phone_home_success">/WEB-INF/jsp/phone/record/homepage.jsp</result>
+            <result name="phone_xiangqing_success">/WEB-INF/jsp/phone/record/xiangqing.jsp</result>
         </action>
 
+        <action name="site_*" class="siteAction" method="{1}">
+            <result name="phone_home_success">/WEB-INF/jsp/phone/site/homepage.jsp</result>
+            <result name="phone_elist_success">/WEB-INF/jsp/phone/site/elist.jsp</result>
+            <result name="phone_slist_success">/WEB-INF/jsp/phone/site/slist.jsp</result>
+        </action>
+
+        <action name="dictionaries_*" class="dictionariesAction" method="{1}">
+        </action>
+        <action name="muban_*" class="mubanAction" method="{1}">
+        </action>
+        <action name="maintainGroup_*" class="maintainGroupAction" method="{1}">
+            <result name="phone_home_Success">/WEB-INF/jsp/phone/maintainGroup/homepage.jsp</result>
+            <result name="phone_elist_success">/WEB-INF/jsp/phone/maintainGroup/elist.jsp</result>
+            <result name="phone_slist_success">/WEB-INF/jsp/phone/maintainGroup/slist.jsp</result>
+        </action>
         <!--放最后面-->
         <action name="page_*_*">
             <result>/WEB-INF/jsp/{1}/{2}.jsp</result>

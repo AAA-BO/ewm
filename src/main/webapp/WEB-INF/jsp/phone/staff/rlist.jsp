@@ -4,11 +4,11 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>BUI示例</title>
+    <title>维护记录</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.css">
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/zepto.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.js"></script>
+    <link rel="stylesheet" href="/bui/bui.css">
+    <script src="/bui/zepto.js"></script>
+    <script src="/bui/bui.js"></script>
     <style></style>
 </head>
 <body>
@@ -116,18 +116,17 @@
         <div class="bui-bar-left bui-bar-text">
             <a class="bui-btn" onclick="bui.back();"><i class="icon-back"></i>返回</a>
         </div>
-        <div class="bui-bar-main">维护信息</div>
+        <div class="bui-bar-main">维护记录</div>
         <div class="bui-bar-right">
         </div>
     </header>
     <main>
 
-        <ul class="bui-list list-photo">
-            <%-- 使用时间倒序排序--%>
+        <ul class="bui-list personal-info">
             <s:iterator value="#request.records" var="record">
                 <li class="bui-btn bui-box" onclick="to('/record_phone_home','${record.oid}');">
                     <div class="thumbnail">
-                        <img src="images/demo/xiaowaji.jpg" alt="">
+                        <img src="demo/sb${record.equipment.oid%4}.jpg" alt="">
                     </div>
                     <div class="span1">
                         <div class="photo-info">
@@ -144,6 +143,9 @@
     </main>
 </div>
 <script>
+    bui.ready(function () {
+    })
+
     function to(url, rid) {
         window.location.href = url + "?oid=" + rid;
     }

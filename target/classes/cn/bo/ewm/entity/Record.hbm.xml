@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
     <class name="cn.bo.ewm.entity.Record" table="e_record" schema="ewm">
@@ -11,14 +11,14 @@
         </id>
 
         <property name="date">
-            <column name="date" sql-type="timestamp" not-null="true"/>
+            <column name="date" sql-type="timestamp" />
         </property>
 
         <property name="info">
-            <column name="info" sql-type="varchar(255)" not-null="true"/>
+            <column name="info" sql-type="varchar(255)" />
         </property>
 
-        <many-to-one name="staff"  column="staff_id" class="cn.bo.ewm.entity.Staff" lazy="false"/>
-        <many-to-one name="equipment"  column="equipment_id" class="cn.bo.ewm.entity.Equipment" lazy="false"/>
+        <many-to-one name="staff" column="staff_id" class="cn.bo.ewm.entity.Staff" lazy="false"/>
+        <many-to-one name="equipment" column="equipment_id" class="cn.bo.ewm.entity.Equipment" lazy="false"/>
     </class>
 </hibernate-mapping>

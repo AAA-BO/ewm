@@ -13,7 +13,7 @@
     <div class="layui-header">
         <div class="layui-logo">建筑施工管理系统后台</div>
         <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item">
+            <%--<li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="images/user.jpg" class="layui-nav-img">
                     管理员
@@ -23,7 +23,18 @@
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="/admin_logout">退出</a></li>
+            <li class="layui-nav-item"><a href="/admin_logout">退出</a></li>--%>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="images/user.jpg" class="layui-nav-img">
+                        ${loginUser.name}
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="/staff_logout">退出</a></li>
         </ul>
     </div>
 
@@ -32,24 +43,32 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul id="id_leftNav" class="layui-nav layui-nav-tree" lay-filter="leftNav">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">维护人员</a>
+                    <a class="" href="javascript:;">员工设备</a>
                     <dl class="layui-nav-child">
+                        <dd><a href="/page_site_list">工地管理</a></dd>
                         <dd><a href="/page_staff_list">人员管理</a></dd>
-                        <dd><a href="/page_staff_relevance">关联设备</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">公司设备</a>
-                    <dl class="layui-nav-child">
                         <dd><a href="/page_equipment_list">设备管理</a></dd>
-                        <dd><a href="/page_equipment_list">设备管理2</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">维护记录</a>
+                    <a href="javascript:;">维护相关</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="/page_record_list">记录管理</a></dd>
-                        <dd><a href="/page_record_list">记录管理2</a></dd>
+                        <dd><a href="/page_muban_list">模板管理</a></dd>
+                        <dd><a href="/page_equipment_relevance">管理模板设置</a></dd>
+                        <dd><a href="/page_record_list">维护记录管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">维护组</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/page_maintainGroup_list">维护组管理</a></dd>
+                        <dd><a href="/page_maintainGroup_join">处理申请</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">系统设置</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/page_dictionaries_list">系统数据</a></dd>
                     </dl>
                 </li>
             </ul>

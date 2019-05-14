@@ -1,9 +1,11 @@
 package cn.bo.ewm.web.action;
 
 import cn.bo.ewm.entity.Equipment;
+import cn.bo.ewm.entity.MaintainGroup;
 import cn.bo.ewm.entity.Record;
 import cn.bo.ewm.entity.Staff;
 import cn.bo.ewm.service.IEquipmentService;
+import cn.bo.ewm.service.ISiteService;
 import cn.bo.ewm.service.IStaffService;
 import cn.bo.ewm.web.action.base.BaseAction;
 import com.opensymphony.xwork2.ActionContext;
@@ -25,59 +27,99 @@ import java.util.*;
 @Controller
 @Scope("prototype")
 public class StaffAction extends BaseAction<Staff> {
-    @Autowired
-    private IStaffService staffService;
-    @Autowired
-    private IEquipmentService equipmentService;
 
     public void list() throws Exception {
         staffService.pageQuery(pageBean);
-        this.java2Json(pageBean, new String[]{"page", "limit", "detachedCriteria", "equipments", "records"});
-        return;
+        this.java2Json(pageBean, new String[]{"page", "limit", "detachedCriteria", "equipments", "records", "staffs"});
     }
 
-    private String getZhicheng(Enumeration e) {
+    public void getAll() throws Exception {
+        List<Staff> all = staffService.findAll();
+        pageBean.setCount(all.size());
+        pageBean.setData(all);
+        this.java2Json(pageBean, new String[]{"page","limit","detachedCriteria", "records", "staffs","equipments" });
+    }
+
+    private String getZhicheng() {
+        Enumeration e = ServletActionContext.getRequest().getParameterNames();
         StringBuilder sb = new StringBuilder();
         while (e.hasMoreElements()) {
             Object o = e.nextElement();
             String s = o.toString();
-            if(s.startsWith("zhicheng")) {
-                sb.append(s.substring(9,s.length()-1)+",");
+            if (s.startsWith("zhicheng")) {
+                sb.append(s.split("_")[1] + ",");
             }
         }
-        if(sb.length()>0) {
-            return  sb.deleteCharAt(sb.length()-1).toString();
-        }else {
+        if (sb.length() > 0) {
+            return sb.deleteCharAt(sb.length() - 1).toString();
+        } else {
             return null;
         }
     }
 
     public void add() throws Exception {
-        // 解析职称复选框，并设入
-        model.setZhicheng( getZhicheng(ServletActionContext.getRequest().getParameterNames()) );
+        // 对username的存在性进行校验
+        if (staffService.usernameExist(model.getUsername())) {
+            printFlag(2);
+            return;
+        }
+        // 解析工地
+        // 对象要先get，不能直接传oid，hibernate无法解析。没有对象引用时传null。不要传空数据的Object
+        if (model.getSite() != null && model.getSite().getOid() != null) {
+            model.setSite(siteService.findById(model.getSite().getOid()));
+        } else {
+            model.setSite(null);
+        }
+        // 解析职称
+        model.setZhicheng(getZhicheng());
         staffService.save(model);
         printFlag(1);
     }
 
+    /**
+     * 检测账户username是否已存在，用与add或upadte操作时的验证
+     *
+     * @return 0-不存在，1-存在
+     */
+    public void usernameExist() throws Exception {
+        Boolean exist = staffService.usernameExist(model.getUsername());
+        if (exist) {
+            printFlag(1);
+        } else {
+            printFlag(0);
+        }
+    }
+
     public void update() throws Exception {
         Staff staff = staffService.findById(model.getOid());
+        // 先判断账户知否更改
+        // 没更改肯定存在，就是原账户
+        if (!staff.getUsername().equals(model.getUsername())) {
+            if (staffService.usernameExist(model.getUsername())) {
+                printFlag(2);
+                return;
+            }
+        }
+
         staff.setName(model.getName());// 将要更新的属性重设
         staff.setUsername(model.getUsername());// 将要更新的属性重设
         staff.setPassword(model.getPassword());// 将要更新的属性重设
+        staff.setSex(model.getSex());// 将要更新的属性重设
+        staff.setAge(model.getAge());// 将要更新的属性重设
+        staff.setDepartment(model.getDepartment());// 将要更新的属性重设
+        staff.setPhone(model.getPhone());// 将要更新的属性重设
+        staff.setEmail(model.getEmail());// 将要更新的属性重设
+        // 设置Site，不级联保存，只是关联！对象要先get，不能直接传oid，hibernate无法解析。没有对象引用时传null。不要传空数据的Object
+        if (model.getSite() != null && model.getSite().getOid() != null) {
+            staff.setSite(siteService.findById(model.getSite().getOid()));
+        } else {
+            staff.setSite(null);
+        }
+        // 解析职称复选框，并设入
+        staff.setZhicheng(getZhicheng());
 
         staffService.update(staff);
         printFlag(1);
-    }
-
-
-    private String ids;
-
-    public String getIds() {
-        return ids;
-    }
-
-    public void setIds(String ids) {
-        this.ids = ids;
     }
 
     public void delete() throws Exception {
@@ -90,7 +132,8 @@ public class StaffAction extends BaseAction<Staff> {
      *
      * @throws Exception
      */
-    public void showEquipment() throws Exception {
+    // 旧版：查询直接维护设备
+    /*public void showEquipment() throws Exception {
         // TODO:需改造
         Staff staff = staffService.findById(model.getOid());
         List<Equipment> equipments = new ArrayList<>(staff.getEquipments());
@@ -111,7 +154,35 @@ public class StaffAction extends BaseAction<Staff> {
         int page = pageBean.getPage();
         int limit = pageBean.getLimit();
         pageBean.setData(equipments.subList((page - 1) * limit, page * limit > equipments.size() ? equipments.size() : page * limit));
-        this.java2Json(pageBean, new String[]{"page", "limit", "detachedCriteria", "staffs", "records"});
+        this.java2Json(pageBean, new String[]{"page", "limit", "detachedCriteria", "staffs", "records","equipments"});
+        return;
+    }*/
+    // 查询所属维护组的设备
+    public void showEquipment() throws Exception {
+        // TODO:需改造
+        Staff staff = staffService.findById(model.getOid());
+        List<Equipment> equipments = new ArrayList<>();
+        for (MaintainGroup  mg : staff.getMaintainGroups()) {
+            equipments.addAll(mg.getEquipments());
+        }
+
+        // 使用oid排序
+        equipments.sort(new Comparator<Equipment>() {
+            public int compare(Equipment o1, Equipment o2) {
+                if (o1.getOid() == o2.getOid()) {
+                    return 0;
+                }
+                if (o1.getOid() > o2.getOid()) {
+                    return 1;
+                }
+                return -1;
+            }
+        });
+        pageBean.setCount(equipments.size());
+        int page = pageBean.getPage();
+        int limit = pageBean.getLimit();
+        pageBean.setData(equipments.subList((page - 1) * limit, page * limit > equipments.size() ? equipments.size() : page * limit));
+        this.java2Json(pageBean, new String[]{"page", "limit", "detachedCriteria", "staffs", "records","equipments"});
         return;
     }
 
@@ -211,9 +282,9 @@ public class StaffAction extends BaseAction<Staff> {
      */
     public void getNotRelevance() throws Exception {
         List<Equipment> equipments = equipmentService.getNotRelevance(model.getOid());
-        pageBean.setCount(null==equipments ? 0 : equipments.size());
-        pageBean.setData(null==equipments ? null : equipments);
-        this.java2Json(pageBean, new String[]{"page", "limit", "detachedCriteria", "staffs", "records"});
+        pageBean.setCount(null == equipments ? 0 : equipments.size());
+        pageBean.setData(null == equipments ? null : equipments);
+        this.java2Json(pageBean, new String[]{"page", "limit", "detachedCriteria", "staffs", "records","equipments"});
         return;
     }
 
@@ -241,7 +312,7 @@ public class StaffAction extends BaseAction<Staff> {
 
     public String phoneLoginPage() throws Exception {
         HttpServletRequest request = ServletActionContext.getRequest();
-        request.getSession().setAttribute("lastOid",model.getOid());
+        request.getSession().setAttribute("lastOid", model.getOid());
         return "phoneLogin";
     }
 
@@ -250,7 +321,7 @@ public class StaffAction extends BaseAction<Staff> {
         if (staff != null && StringUtils.isNotBlank(staff.getPassword()) && StringUtils.isNotBlank(model.getPassword())) {
             if (staff.getPassword().equals(model.getPassword())) {
                 ServletActionContext.getRequest().getSession().setAttribute("loginUser", staff);
-                if(isPhone){
+                if (isPhone) {
                     return "phoneLoginSUCCESS";
                 }
                 return SUCCESS;
@@ -259,7 +330,7 @@ public class StaffAction extends BaseAction<Staff> {
 
         addActionError("用户名或密码错误");
 
-        if(isPhone){
+        if (isPhone) {
             return "phoneLogin";
         }
         return LOGIN;
@@ -279,6 +350,7 @@ public class StaffAction extends BaseAction<Staff> {
      * 查询该用户的所有维护设备
      */
     public String phone_elist() throws Exception {
+        // 从员工直接关联设备查
         Staff staff = staffService.findById(model.getOid());
         List<Equipment> equipments = new ArrayList<>(staff.getEquipments());
 
@@ -294,8 +366,19 @@ public class StaffAction extends BaseAction<Staff> {
                 return -1;
             }
         });
-        ServletActionContext.getRequest().setAttribute("equipments",equipments);
+//        ServletActionContext.getRequest().setAttribute("equipments", equipments);
+
+        //获取维护组数据
+        ServletActionContext.getRequest().setAttribute("maintainGroups", staff.getMaintainGroups());
+
         return "phone_elist_Success";
+    }
+
+    // 所有维护组
+    public String phone_mlist() throws Exception {
+        Staff staff = staffService.findById(model.getOid());
+        ServletActionContext.getRequest().setAttribute("maintainGroups", staff.getMaintainGroups());
+        return "phone_mlist_Success";
     }
 
     /**
@@ -317,7 +400,7 @@ public class StaffAction extends BaseAction<Staff> {
                 return -1;
             }
         });
-        ServletActionContext.getRequest().setAttribute("records",records);
+        ServletActionContext.getRequest().setAttribute("records", records);
         return "phone_rlist_Success";
     }
 

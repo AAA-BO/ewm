@@ -5,10 +5,11 @@
 <head>
     <meta charset="utf-8">
     <title>BUI示例</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.css">
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/zepto.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.js"></script>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/bui/bui.css">
+    <script src="/bui/zepto.js"></script>
+    <script src="/bui/bui.js"></script>
     <style></style>
 </head>
 <body>
@@ -121,31 +122,34 @@
         </div>
     </header>
     <main>
-
-        <ul class="bui-list list-photo">
-        <s:iterator value="#request.records" var="record">
-            <li class="bui-btn bui-box" onclick="to('/record_phone_home','${record.oid}');">
-                <div class="thumbnail">
-                    <img src="images/demo/xiaowaji.jpg" alt="">
-                </div>
-                <div class="span1">
-                    <div class="photo-info">
-                        <h3 class="photo-title">${record.staff.name}
-                            <div class="photo-desc">
-                                <span class="time"><s:date name="date" format="yyyy/MM/dd hh:mm" />：${record.info}</span>
-                            </div>
-                        </h3>
+        <ul class="bui-list personal-info">
+            <s:iterator value="#request.records" var="record">
+                <li class="bui-btn bui-box" onclick="to('/record_phone_home','${record.oid}');">
+                    <div class="thumbnail ring">
+                        <img src="demo/tx${record.staff.oid%5}.jpg" alt="">
                     </div>
-                </div>
-            </li>
-        </s:iterator>
+                    <div class="span1">
+                        <div class="photo-info">
+                            <h3 class="photo-title">${record.staff.name}
+                                <div class="photo-desc">
+                                    <span class="time"><s:date name="date"
+                                                               format="yyyy/MM/dd hh:mm"/>：${record.info}</span>
+                                </div>
+                            </h3>
+                        </div>
+                    </div>
+                </li>
+            </s:iterator>
 
         </ul>
     </main>
 </div>
 <script>
-    function to(url,oid) {
-        window.location.href = url+"?oid="+oid;
+    bui.ready(function () {
+    })
+
+    function to(url, oid) {
+        window.location.href = url + "?oid=" + oid;
     }
 
 </script>

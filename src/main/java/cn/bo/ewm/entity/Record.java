@@ -1,23 +1,22 @@
 package cn.bo.ewm.entity;
 
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * 维护记录
  */
 public class Record {
-    private int oid;
-    private Staff staff; // 维护人
-    private Equipment equipment; // 维护设备
+    private Integer oid;
+    private Staff staff; // 维护员工 多对一
+    private Equipment equipment; // 维护设备 多对一
     private Date date; // 维护时间
     private String info; // 维护信息
 
-    public int getOid() {
+    public Integer getOid() {
         return oid;
     }
 
-    public void setOid(int oid) {
+    public void setOid(Integer oid) {
         this.oid = oid;
     }
 
@@ -52,22 +51,4 @@ public class Record {
     public void setInfo(String info) {
         this.info = info;
     }
-
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Record)) return false;
-        Record record = (Record) o;
-        return getOid() == record.getOid() &&
-                Objects.equals(getStaff(), record.getStaff()) &&
-                Objects.equals(getEquipment(), record.getEquipment()) &&
-                Objects.equals(getDate(), record.getDate()) &&
-                Objects.equals(getInfo(), record.getInfo());
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getOid(), getStaff(), getEquipment(), getDate(), getInfo());
-    }*/
 }

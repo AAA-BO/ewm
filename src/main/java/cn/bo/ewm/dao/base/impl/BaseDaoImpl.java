@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import cn.bo.ewm.dao.base.IBaseDao;
 import cn.bo.ewm.utils.PageBean;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,8 +39,8 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		entityClass = (Class<T>) actualTypeArguments[0];
 	}
 	
-	public void save(T entity) {
-		this.getHibernateTemplate().save(entity);
+	public Serializable save(T entity) {
+		return this.getHibernateTemplate().save(entity);
 	}
 	
 	public void delete(T entity) {
@@ -59,7 +60,9 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return (List<T>) this.getHibernateTemplate().find(hql);
 	}
 
-	//执行更新
+	/**
+	 * 执行hbm文件中定义的更新SQL
+	 */
 	public void executeUpdate(String queryName, Object... objects) {
 		Session session = this.getSessionFactory().getCurrentSession();
 		Query query = session.getNamedQuery(queryName);
@@ -85,7 +88,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		List<Long> countList = (List<Long>) this.getHibernateTemplate().findByCriteria(detachedCriteria);
 		Long count = countList.get(0);
 		pageBean.setCount(count.intValue());
-		
+
 		//查询rows---当前页需要展示的数据集合
 		detachedCriteria.setProjection(null);//指定hibernate框架发出sql的形式----》select * from bc_staff;
 		//指定hibernate框架封装对象的方式
@@ -94,6 +97,48 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		int maxResults = pageSize;
 		List data = this.getHibernateTemplate().findByCriteria(detachedCriteria, firstResult, maxResults);
 		pageBean.setData(data);
+	}
+
+	@Override
+	public Boolean exist(String field, String value) {
+		Session session = this.getSessionFactory().getCurrentSession();
+		Query query = session.createQuery("select count(*) from " + entityClass.getName() + " t where t." + field + "=?");
+		query.setParameter(0,value);
+		List list = query.list();
+		if(list.size()>0) {
+			Integer count = Integer.valueOf(list.get(0).toString());
+			if(count>0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public List<String> selectGroupDataByField(String field) {
+		Session session = this.getSessionFactory().getCurrentSession();
+		Query query = session.createQuery("select "+field+" from " + entityClass.getName() + " t group by "+field);
+		return query.list();
+	}
+
+	@Override
+	public List hql(String hql) {
+		Session session = this.getSessionFactory().getCurrentSession();
+		Query query = session.createQuery(hql);
+		return query.list();
+	}
+
+	@Override
+	public List sql(String sql) {
+		Session session = this.getSessionFactory().getCurrentSession();
+		Query query = session.createSQLQuery(sql);
+		return query.list();
+	}
+
+	@Override
+	public void clearSession() {
+		Session session = this.getSessionFactory().getCurrentSession();
+		session.clear();
 	}
 
 	public void saveOrUpdate(T entity) {

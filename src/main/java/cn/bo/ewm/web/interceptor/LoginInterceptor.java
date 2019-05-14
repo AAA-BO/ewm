@@ -10,10 +10,18 @@ public class LoginInterceptor extends MethodFilterInterceptor {
 
     @Override
     protected String doIntercept(ActionInvocation invocation) throws Exception {
-        Object isLogin = ServletActionContext.getRequest().getSession().getAttribute("isLogin");
+        Object loginUser = ServletActionContext.getRequest().getSession().getAttribute("loginUser");
+        if(loginUser != null) {
+            return invocation.invoke();
+        }
+//        return "login";
+        return "login_houtai";
+
+
+        /*Object isLogin = ServletActionContext.getRequest().getSession().getAttribute("isLogin");
         if(isLogin != null && "true".equals(isLogin)) {
             return invocation.invoke();
         }
-        return "login-admin";
+        return "login-admin";*/
     }
 }

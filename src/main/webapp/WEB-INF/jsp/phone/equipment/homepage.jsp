@@ -4,11 +4,11 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>BUI示例</title>
+    <title>设备信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.css">
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/zepto.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.js"></script>
+    <link rel="stylesheet" href="/bui/bui.css">
+    <script src="/bui/zepto.js"></script>
+    <script src="/bui/bui.js"></script>
     <style></style>
 </head>
 <body>
@@ -73,30 +73,34 @@
 
         <ul class="bui-list personal-info">
             <li class="bui-btn bui-box">
-                <div class="thumbnail ring"><img src="images/demo/xiaowaji.jpg" alt=""></div>
                 <div class="span1">
                     <h3 class="item-title">${name}</h3>
-                    <p class="item-text">编码：562484</p>
                 </div>
             </li>
         </ul>
         <ul class="bui-list contact-list">
-            <li class="bui-btn bui-box clearactive">
+            <li class="bui-btn bui-box clearactive" onclick="to('/site_phone_home',${site.oid});">
+                <label class="bui-label">所在工地</label>
+                <div class="span1">
+                    <div class="bui-value">${site.name}</div>
+                </div>
+            </li>
+            <li class="bui-btn bui-box clearactive" onclick="to('/equipment_phone_mlist');">
+                <label class="bui-label">有维护组</label>
+                <div class="span1">
+                    <div class="bui-value">共${maintainGroupNumber}个</div>
+                </div>
+            </li>
+            <li class="bui-btn bui-box clearactive" onclick="to('/equipment_phone_slist');">
                 <label class="bui-label">维护人员</label>
                 <div class="span1">
-                    <div class="bui-value">${number}人</div>
+                    <div class="bui-value">共${staffNumber}位</div>
                 </div>
             </li>
-            <li class="bui-btn bui-box clearactive">
-                <label class="bui-label">地区</label>
+            <li class="bui-btn bui-box clearactive" onclick="to('/equipment_phone_rlist');">
+                <label class="bui-label">维护记录</label>
                 <div class="span1">
-                    <div class="bui-value">xxxxx</div>
-                </div>
-            </li>
-            <li class="bui-btn bui-box clearactive">
-                <label class="bui-label">所属工程</label>
-                <div class="span1">
-                    <div class="bui-value">asdasdsad</div>
+                    <div class="bui-value">共${recordNumber}条</div>
                 </div>
             </li>
         </ul>
@@ -119,12 +123,6 @@
 <!-- 自定义弹出菜单结构	 -->
 <div id="actionsheet" class="bui-actionsheet actionsheet-custom" style="display: none">
     <ul class="bui-nav-icon bui-fluid-4">
-        <li class="bui-btn" onclick="to('/equipment_phone_slist');">
-            <i class="icon"><img src="images/icon_see.png" alt=""></i>维护人员
-        </li>
-        <li class="bui-btn" onclick="to('/equipment_phone_rlist');">
-            <i class="icon"><img src="images/icon_see.png" alt=""></i>维护记录
-        </li>
         <li class="bui-btn" onclick="tomyrlist();">
             <i class="icon"><img src="images/icon_see.png" alt=""></i>我的记录
         </li>
@@ -134,8 +132,12 @@
 
 <script>
 
-    function to(url) {
-        window.location.href = url+"?oid=${oid}";
+    function to(url,oid) {
+        if(oid==null) {
+            window.location.href = url+"?oid=${oid}";
+        }else {
+            window.location.href = url+"?oid="+oid;
+        }
     }
 
 
@@ -171,14 +173,11 @@
             height: 380,
             autopage: true,
             data: [{
-                image: "images/demo/wajueji.jpg",
+                image: "demo/sb${oid%4}.jpg",
                 url: "#",
-            }, {
-                image: "images/demo/wajueji.jpg",
-                url: "#",
-            }, {
-                image: "images/demo/wajueji.jpg",
-                url: "#",
+            // }, {
+            //     image: "demo/sb4.jpg",
+            //     url: "#",
             }],
             loop: true,
         })
@@ -216,17 +215,17 @@
                             this.close()
                         });
                     }else if(data == 0) {
-                        bui.confirm("您没有该设备的维护权限，是否申请维护权限？", function (e) {
+                        bui.confirm("您没有该设备的维护权限，是否前往维护组页面申请维护权限？", function (e) {
                             //this 是指点击的按钮
                             var text = $(e.target).text();
 
                             if (text == "确定") {
-                                bui.alert("已申请");
+                                to('/equipment_phone_mlist');
                             }
                             this.close()
                         });
                     }else if(data == 1) {
-                        window.location.href = "/phonePage_equipment_weihu?oid=${oid}"
+                        window.location.href = "/equipment_phone_weihu?oid=${oid}"
                     }
                 });
 

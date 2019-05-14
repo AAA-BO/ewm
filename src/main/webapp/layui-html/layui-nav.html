@@ -608,7 +608,7 @@
                     layer.confirm('确认要删除选中的行吗？', {icon: 3, title:'警告'}, function(index){
                         // 获取选中项id
                         var deleteIds = new Array();
-                        for (data_index in checkStatus.data){
+                        for (var data_index in checkStatus.data){
                             console.log(checkStatus.data[data_index].id);
                             deleteIds.push(checkStatus.data[data_index].id);
                         }

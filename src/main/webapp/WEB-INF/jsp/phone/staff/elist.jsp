@@ -4,11 +4,11 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>BUI示例</title>
+    <title>所维护设备</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.css">
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/zepto.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.js"></script>
+    <link rel="stylesheet" href="/bui/bui.css">
+    <script src="/bui/zepto.js"></script>
+    <script src="/bui/bui.js"></script>
     <style></style>
 </head>
 <body>
@@ -116,34 +116,64 @@
         <div class="bui-bar-left bui-bar-text">
             <a class="bui-btn" onclick="bui.back();"><i class="icon-back"></i>返回</a>
         </div>
-        <div class="bui-bar-main">图片列表模板</div>
+        <div class="bui-bar-main">所维护设备</div>
         <div class="bui-bar-right">
         </div>
     </header>
     <main>
         <ul class="bui-list list-photo contact-list">
+            <%--<li class="bui-btn-title">
+                <h3 class="photo-title">直接管理的设备</h3>
+            </li>
             <s:iterator value="#request.equipments" var="equipment">
                 <li class="bui-btn" onclick="to('/equipment_phone_home','${equipment.oid}');">
                     <div class="bui-box-space">
                         <div class="span1">
                             <div class="photo-item">
-                                <img src="images/demo/wajueji.jpg" alt="">
+                                <img src="demo/sb${equipment.oid%4}.jpg" alt="">
                             </div>
                             <div class="photo-info">
                                 <h3 class="photo-title">${equipment.name}</h3>
                                 <div class="photo-desc">
-                                    <%--展示设备最新的维护信息--%>
-                                    <span class="time">2018-01-22：设备没问题</span>
+                                    <span class="time">所在场地：${equipment.site.name}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </li>
+            </s:iterator>--%>
+            <%--维护组--%>
+            <s:iterator value="#request.maintainGroups" var="maintainGroup">
+                <li class="bui-btn-title">
+                    <h3 class="photo-title">维护组：${maintainGroup.name}</h3>
+                    <div class="photo-desc">
+                        <span class="time">简介：${maintainGroup.info}</span>
+                    </div>
+                </li>
+                <s:iterator value="equipments" var="equipment">
+                    <li class="bui-btn" onclick="to('/equipment_phone_home','${equipment.oid}');">
+                        <div class="bui-box-space">
+                            <div class="span1">
+                                <div class="photo-item">
+                                    <img src="demo/sb${equipment.oid%4}.jpg" alt="">
+                                </div>
+                                <div class="photo-info">
+                                    <h3 class="photo-title">${equipment.name}</h3>
+                                    <div class="photo-desc">
+                                        <span class="time">所在场地：${equipment.site.name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </s:iterator>
             </s:iterator>
         </ul>
     </main>
 </div>
 <script>
+    bui.ready(function () {
+    })
     function to(url,eid) {
         window.location.href = url+"?oid="+eid;
     }

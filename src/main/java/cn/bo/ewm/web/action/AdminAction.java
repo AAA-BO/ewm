@@ -1,28 +1,15 @@
 package cn.bo.ewm.web.action;
 
-import cn.bo.ewm.entity.Equipment;
-import cn.bo.ewm.entity.Record;
-import cn.bo.ewm.entity.Staff;
-import cn.bo.ewm.service.IEquipmentService;
-import cn.bo.ewm.service.IStaffService;
-import cn.bo.ewm.utils.MD5Utils;
-import cn.bo.ewm.web.action.base.BaseAction;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 @Controller
 @Scope("prototype")
