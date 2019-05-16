@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="cn.bo.ewm.entity.Model" table="e_model" schema="ewm">
+        <id name="oid">
+            <column name="oid" sql-type="int(10) unsigned" />
+            <generator class="native"/>
+        </id>
+        <property name="name">
+            <column name="name" sql-type="varchar(50)" not-null="true"/>
+        </property>
+        <property name="age">
+            <column name="age" sql-type="int(10)" not-null="true"/>
+        </property>
+
+        <!--多对一，多是有外键的一方，多方立即加载一方数据-->
+        <many-to-one name="staff"  column="staff_id" class="cn.bo.ewm.entity.Staff" lazy="false"/>
+
+        <!--一对多，一是没有外键的一方，一方懒加载多方数据-->
+        <set name="staffs" table="e_staff" lazy="true">
+            <!--表示在Equipment表中有model_id字段，来表示Equipment对象所属model-->
+            <key column="model_id"></key>
+            <one-to-many class="cn.bo.ewm.entity.Staff"/>
+        </set>
+
+        <!--多对多，外键都在中间表中，双方都懒加载另一方的数据-->
+        <set name="equipments" table="e_model_equipment" lazy="true">
+            <!--自己在中间表中的字段-->
+            <key column="model_id"/>
+            <many-to-many class="cn.bo.ewm.entity.Equipment" column="equipments_id"/>
+        </set>
+    </class>
+</hibernate-mapping>

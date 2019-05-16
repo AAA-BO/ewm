@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="cn.bo.ewm.entity.Staff" table="e_staff" schema="ewm">
+        <id name="oid">
+            <column name="oid" sql-type="int(10) unsigned"/>
+            <generator class="native"/>
+        </id>
+        <property name="name">
+            <column name="name" sql-type="varchar(50)" not-null="true"/>
+        </property>
+        <property name="username">
+            <column name="username" sql-type="varchar(50)" not-null="true" unique="true"/>
+        </property>
+        <property name="password">
+            <column name="password" sql-type="varchar(50)" not-null="true"/>
+        </property>
+        <!--新增-->
+        <property name="age">
+            <column name="age" sql-type="int(3) unsigned"/>
+        </property>
+        <property name="sex">
+            <column name="sex" sql-type="int(1) unsigned" default="0"/>
+        </property>
+        <property name="department">
+            <column name="department" sql-type="varchar(50)"/>
+        </property>
+        <property name="zhicheng">
+            <column name="zhicheng" sql-type="varchar(50)"/>
+        </property>
+        <property name="phone">
+            <column name="phone" sql-type="varchar(50)"/>
+        </property>
+        <property name="email">
+            <column name="email" sql-type="varchar(50)"/>
+        </property>
+        <property name="image">
+            <column name="image" sql-type="varchar(100)"/>
+        </property>
+
+        <many-to-one name="site" column="site_id" class="cn.bo.ewm.entity.Site" lazy="false"/>
+
+        <set name="equipments" table="e_staff_equipment" lazy="true" cascade="save-update">
+            <key column="staff_id"/>
+            <many-to-many class="cn.bo.ewm.entity.Equipment" column="equipment_id"/>
+        </set>
+
+        <set name="records" table="e_record" lazy="true" cascade="delete">
+            <key column="staff_id"></key>
+            <one-to-many class="cn.bo.ewm.entity.Record"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

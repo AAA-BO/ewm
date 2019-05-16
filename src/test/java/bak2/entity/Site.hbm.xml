@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="cn.bo.ewm.entity.Site" table="e_site">
+        <id name="oid">
+            <generator class="native"/>
+        </id>
+
+        <set name="staffs" table="e_staff" lazy="true">
+            <key column="site_id"></key>
+            <one-to-many class="cn.bo.ewm.entity.Staff"/>
+        </set>
+
+        <set name="equipments" table="e_equipment" lazy="true">
+            <key column="site_id"></key>
+            <one-to-many class="cn.bo.ewm.entity.Equipment"/>
+        </set>
+    </class>
+</hibernate-mapping>
